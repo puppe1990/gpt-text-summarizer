@@ -8,6 +8,7 @@ import {
   FormControl,
   Row,
   Col,
+  Spinner,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,6 +19,7 @@ function App() {
   const [apiKey, setApiKey] = useState(localStorage.getItem("apiKey") || "");
   const [inputText, setInputText] = useState("");
   const [summary, setSummary] = useState("");
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   const handleApiKeyChange = (event) => {
     const newApiKey = event.target.value;
@@ -52,10 +54,11 @@ function App() {
 
   const handleSubmit = async () => {
     try {
+      setLoadingProgress(0);
       const chunks = splitText(inputText, 4000);
       let generatedSummary = "";
 
-      for (const chunk of chunks) {
+      for (const [index, chunk] of chunks.entries()) {
         const prompt = `Please summarize the following text:\n\n${chunk}\n\nSummary:`;
         const response = await axios.post(
           OPENAI_API_URL,
@@ -74,6 +77,7 @@ function App() {
           }
         );
         generatedSummary += response.data.choices[0].text.trim() + " ";
+        setLoadingProgress(((index + 1) / chunks.length) * 100);
       }
 
       setSummary(generatedSummary.trim());
@@ -83,6 +87,8 @@ function App() {
       setSummary(
         "Error: Failed to generate summary. Check your API key and request parameters."
       );
+    } finally {
+      setLoadingProgress(0);
     }
   };
 
@@ -121,9 +127,19 @@ function App() {
             }}
           />
         </InputGroup>
-        <Button variant="primary" onClick={handleSubmit}>
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          disabled={loadingProgress > 0}
+        >
           Summarize
         </Button>
+        {loadingProgress > 0 && (
+          <div className="text-center mt-3">
+            <Spinner animation="border" role="status" />
+            <p>Loading: {loadingProgress.toFixed(0)}%</p>
+          </div>
+        )}
       </Form>
       {summary && (
         <>
