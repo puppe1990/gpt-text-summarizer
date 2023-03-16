@@ -2,6 +2,9 @@
 
 This is a simple React application that uses the OpenAI API to generate summaries for large texts. The user interface provides an input field for pasting text or uploading a text file and displays the generated summary below the input area.
 
+![Screenshot from 2023-03-16 13-08-35](https://user-images.githubusercontent.com/8432835/225685996-e2d74a11-a477-4347-bc34-c51facb9fbfb.png)
+
+
 ## Features
 
 - AI-Powered summarization using OpenAI API
