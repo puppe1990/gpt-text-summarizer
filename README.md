@@ -18,7 +18,7 @@ This is a simple React application that uses the OpenAI API to generate summarie
 Before you begin, make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/get-npm) installed on your machine.
 
 1. Clone the repository:
-   git clone https://github.com/puppe1990/text-summarizer.git
+   git clone https://github.com/puppe1990/gpt-text-summarizer.git
 
 2. Navigate to the project directory:
 
